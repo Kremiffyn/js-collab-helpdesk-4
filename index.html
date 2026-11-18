@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk</title>
+    <link rel="icon" href="lisokona.png">
     <link rel="stylesheet" href="styl.css">
     <script src="script.js" defer></script>
 </head>
@@ -26,20 +27,14 @@
 
                 <p>Priority:
 
-                    <label>
                         <input type="radio" name="priority" value="high">
-                        High
-                    </label>
+                         <label>High</label>
 
-                    <label>
                         <input type="radio" name="priority" value="normal" checked>
-                        Normal
-                    </label>
-
-                    <label>
+                        <label>Normal</label>
+     
                         <input type="radio" name="priority" value="low">
-                        Low
-                    </label>
+                        <label>Low</label>
 
                 </p>
 
@@ -68,6 +63,9 @@
                 / All: <span id="totalCount">0</span>
             </p>
 
+            <button id="resetMemory" type="button" onclick="resetMemory()">
+                Reset Memory
+            </button>
         </div>
 
         <div class="panel">
@@ -110,6 +108,14 @@
 
         <ul id="ticketList">
         </ul>
+
+    </div>
+
+    <img id="Fox" src="ArcticFox.png" alt="lisio">
+
+     <img id="Snowman" src="Snowman.png" alt="balwanek" onclick="lightSnowman()">
+    
+    <div class="footer">
 
     </div>
 
