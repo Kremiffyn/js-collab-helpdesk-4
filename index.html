@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk</title>
+    <link rel="icon" href="lisokona.png">
     <link rel="stylesheet" href="styl.css">
     <script src="script.js" defer></script>
 </head>
@@ -63,6 +64,9 @@
                 / All: <span id="totalCount">0</span>
             </p>
 
+            <button id="resetMemory" type="button" onclick="resetMemory()">
+                Reset Memory
+            </button>
         </div>
 
         <div class="panel">
@@ -95,10 +99,14 @@
         </div>
 
     </div>
-
+    
     <div class="tickets-section">
 
         <h2>Tickets</h2>
+
+        <button id="exJSON">Export to JSON</button>
+        <button id="exCSV">Export to CSV</button>
+        <button id="exXML">Export to XML</button>
 
         <ul id="ticketList">
         </ul>
