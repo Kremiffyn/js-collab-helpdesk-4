@@ -254,7 +254,7 @@ async function listImport() {
         filter();
         document.getElementById("message_import").textContent = "Import succesful";
     } catch (error) {
-        document.getElementById("message_import").textContent = error;
+        document.getElementById("message_import").textContent = error.message;
     }
 }
 
