@@ -446,7 +446,7 @@ function exportXML()
     textXML+='<tickets>';
 
     tickets.forEach(i => {
-        textXML+=`<ticket id="${i.id}"><title>${i.title}</title><status>${i.status}</status><priority>${i.priority}</priority></identifier>`
+        textXML+=`<ticket id="${i.id}"><title>${i.title}</title><status>${i.status}</status><priority>${i.priority}</priority></ticket>`
     });
    
     textXML+='</tickets>';
