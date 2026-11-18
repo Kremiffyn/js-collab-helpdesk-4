@@ -160,3 +160,80 @@ function changeStatus()
     document.getElementById("message_change").textContent = "Ticket status updated successfully.";
     filter();
 }
+async function listImport() {
+    try {
+        const response = await fetch("tickets.json");
+    
+        if (!response.ok) {
+            throw new Error("Failed to download file: " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error("JSON must contain an array");
+        }
+
+        data.forEach(function(ticket) {
+            if (typeof ticket.id !== "string" ||
+                typeof ticket.title !== "string" ||
+                typeof ticket.status !== "string" ||
+                typeof ticket.priority !== "string"
+            ) {
+                throw new Error("Invalid data structure");
+            }
+            if (ticket.id) {
+
+            }
+        })
+    /*
+        if (tickets.length >= 1000) {
+            return false;
+        }
+
+        if (!id || typeof id !== "string" || id.trim().length === 0 || id.length > 100) {
+            return false;
+        }
+
+        const trimmedTitle = title ? title.trim() : "";
+        if (trimmedTitle.length < 3 || trimmedTitle.length > 80) {
+            return false;
+        }
+
+        if (status !== 'new' && status !== 'doing' && status !== 'done') {
+            return false;
+        }
+
+        if (priority !== 'low' && priority !== 'normal' && priority !== 'high') {
+            return false;
+        }
+        return true;
+
+
+        if (
+            typeof ticket !== "object" ||
+            ticket === null
+        ) {
+            throw new Error("Ticket must be an object");
+        }
+
+
+        const ids = data.map(ticket => ticket.id);
+
+        if (new Set(ids).size !== ids.length) {
+            throw new Error("Ticket IDs must be unique");
+        }
+
+
+        PRZEŁORZYĆ
+         if (kandydat === null || typeof kandydat !== "object" || Array.isArray(kandydat)) {
+            console.log("Błędny zapis.");
+            return false;
+        }
+    */
+
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
