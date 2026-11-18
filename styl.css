@@ -219,14 +219,73 @@ p {
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: 100% 100%;
-
     position: fixed;
     bottom: 0;
     left: 0;
-
     width: 100%;
     height: 200px;
-
     pointer-events: none;
     z-index: -1;
+}
+
+h1, .tickets-section > h2 {
+    position: relative;
+    overflow: visible;
+}
+
+.title-lights {
+    position: absolute;
+    inset: -15px -5px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.title-lights::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: none;
+    border-top: 2px solid rgba(65, 75, 65, 0.65);
+    border-bottom: 2px solid rgba(65, 75, 65, 0.65);
+    border-left: 2px solid rgba(65, 75, 65, 0.65);
+    border-right: 2px solid rgba(65, 75, 65, 0.65);
+    border-radius: 8px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.title-bulb {
+    position: absolute;
+    width: 11px;
+    height: 15px;
+    box-sizing: border-box;
+    border-radius: 45% 45% 50% 50%;
+    background: var(--color);
+    border: 1px solid rgba(80, 80, 80, 0.4);
+    transform: translate(-50%, 0);
+    z-index: 2;
+    box-shadow:
+        0 0 5px var(--color),
+        0 0 10px var(--color),
+        0 0 15px var(--color);
+
+    animation: christmas-blink var(--speed) ease-in-out infinite alternate;
+    animation-delay: var(--delay);
+}
+
+.title-bulb::before {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 5px;
+    background: #52634b;
+    top: -5px;
+    left: 2px;
+    border-radius: 2px 2px 0 0;
+}
+
+@keyframes christmas-blink {
+    0% {opacity: 0.65;filter: brightness(0.9);}
+
+    100% {opacity: 1; filter: brightness(1.5);}
 }
