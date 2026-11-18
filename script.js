@@ -183,22 +183,34 @@ function changeStatus()
     document.getElementById("message_change").textContent = "Ticket status updated successfully.";
     filter();
 }
-<<<<<<< HEAD
+
+document.getElementById("fileInput").addEventListener("change", listImport);
+
 async function listImport() {
     try {
-        const response = await fetch("tickets.json");
-    
-        if (!response.ok) {
-            throw new Error("Failed to download file: " + response.status);
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+
+        if (!file) {
+            throw new Error("No file selected");
+        }
+        if (!file.name.toLowerCase().endsWith(".json")) {
+            throw new Error("Invalid file extension. Only JSON files are allowed.");
         }
 
-        const data = await response.json();
+        const data = JSON.parse(await file.text());
 
-        if (!Array.isArray(data)) {
+        if (data === null || typeof data !== "object" || !Array.isArray(data)) {
             throw new Error("JSON must contain an array");
+        }
+        if (data.length >= 1000) {
+            throw new Error("JSON can't contain more than 1000 tickets");
         }
 
         data.forEach(function(ticket) {
+            if (ticket === null || typeof ticket !== "object") {
+                throw new Error("Ticket must be an object");
+            }
             if (typeof ticket.id !== "string" ||
                 typeof ticket.title !== "string" ||
                 typeof ticket.status !== "string" ||
@@ -206,62 +218,45 @@ async function listImport() {
             ) {
                 throw new Error("Invalid data structure");
             }
-            if (ticket.id) {
-
+            if (!ticket.id || ticket.id.trim().length === 0 || ticket.id.length > 100) {
+                throw new Error("Invalid ticket Id");
+            }
+            if (ticket.title.trim().length < 3 || ticket.title.trim().length > 80) {
+                throw new Error("The title must be between 3 and 80 characters long.");
+            }
+            if (ticket.status !== 'new' && ticket.status !== 'doing' && ticket.status !== 'done') {
+                throw new Error("Invalid ticket Status");
+            }
+            if (ticket.priority !== 'low' && ticket.priority !== 'normal' && ticket.priority !== 'high') {
+                throw new Error("Invalid ticket Priority");
             }
         })
-    /*
-        if (tickets.length >= 1000) {
-            return false;
-        }
-
-        if (!id || typeof id !== "string" || id.trim().length === 0 || id.length > 100) {
-            return false;
-        }
-
-        const trimmedTitle = title ? title.trim() : "";
-        if (trimmedTitle.length < 3 || trimmedTitle.length > 80) {
-            return false;
-        }
-
-        if (status !== 'new' && status !== 'doing' && status !== 'done') {
-            return false;
-        }
-
-        if (priority !== 'low' && priority !== 'normal' && priority !== 'high') {
-            return false;
-        }
-        return true;
-
-
-        if (
-            typeof ticket !== "object" ||
-            ticket === null
-        ) {
-            throw new Error("Ticket must be an object");
-        }
-
-
         const ids = data.map(ticket => ticket.id);
-
         if (new Set(ids).size !== ids.length) {
             throw new Error("Ticket IDs must be unique");
         }
+        
+        tickets = data.map(ticket => ({
+            id: ticket.id,
+            title: ticket.title.trim(),
+            status: ticket.status,
+            priority: ticket.priority
+        }));
 
+        const numericIds = tickets
+            .map(ticket => Number(ticket.id))
+            .filter(id => Number.isSafeInteger(id) && id >= 0);
 
-        PRZEŁORZYĆ
-         if (kandydat === null || typeof kandydat !== "object" || Array.isArray(kandydat)) {
-            console.log("Błędny zapis.");
-            return false;
-        }
-    */
+        ticketCounter = Math.max(0, ...numericIds) + 1;
 
-        console.log(data);
+        saveToStorage();
+        document.getElementById('ticketForm').reset();
+        filter();
+        document.getElementById("message_import").textContent = "Import succesful";
     } catch (error) {
-        console.log(error);
+        document.getElementById("message_import").textContent = error;
     }
 }
-=======
 
 function resetMemory() 
 {
@@ -1104,4 +1099,3 @@ lisioImg.addEventListener("click", function(event) {
 
 
 if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
->>>>>>> a5e87ebd09ab4b627fedea8f7a87b7c9dc7c064e
