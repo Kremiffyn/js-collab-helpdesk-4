@@ -208,7 +208,7 @@ async function listImport() {
         }
 
         data.forEach(function(ticket) {
-            if (ticket === null || typeof ticket !== "object") {
+            if (ticket === null || typeof ticket !== "object" || Array.isArray(ticket)) {
                 throw new Error("Ticket must be an object");
             }
             if (typeof ticket.id !== "string" ||
