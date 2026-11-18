@@ -1,10 +1,22 @@
 let ticketCounter = 1;
 const tickets = [];
+const link = document.createElement('a');
+let filename;
 
 document.getElementById("ticketForm").addEventListener("submit", function(event) {
     event.preventDefault();
     addTicket();
     filter();
+});
+
+document.getElementById("exJSON").addEventListener("click", () => {
+    event.preventDefault();
+    exportJSON();
+});
+
+document.getElementById("exCSV").addEventListener("click", () => {
+    event.preventDefault();
+    exportCSV();
 });
 
 document.getElementById("statusFilter").addEventListener("change", filter);
@@ -159,4 +171,33 @@ function changeStatus()
 
     document.getElementById("message_change").textContent = "Ticket status updated successfully.";
     filter();
+}
+
+function exportJSON()
+{
+    filename='export.json';
+
+    const text = JSON.stringify(tickets);
+
+    link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(text);
+    link.download = filename;
+    link.click();
+}
+
+function exportCSV()
+{
+    filename='export.csv';
+
+    let textCSV='';
+
+    tickets.forEach(i => {
+        textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
+    });
+
+    document.getElementById("message_change").textContent = textCSV;
+
+    // const link = document.createElement('a');
+    link.href = 'data:application/csv;charset=utf-8,' + encodeURIComponent(textCSV);
+    link.download = filename;
+    link.click();
 }
