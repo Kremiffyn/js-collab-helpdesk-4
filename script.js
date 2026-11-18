@@ -253,10 +253,7 @@ function exportCSV()
     tickets.forEach(i => {
         textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
     });
-
-    document.getElementById("message_change").textContent = textCSV;
-
-    // const link = document.createElement('a');
+    
     link.href = 'data:application/csv;charset=utf-8,' + encodeURIComponent(textCSV);
     link.download = filename;
     link.click();
