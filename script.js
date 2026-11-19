@@ -102,16 +102,16 @@ function lightSnowman()
 {
     let img = document.getElementById("Snowman");
 
-    if (img.src.includes("Snowman.png")) 
+    if (img.src.includes("images/Snowman.png")) 
         {
-            const snowmanSound=new Audio('./lighting.mp3');
+            const snowmanSound=new Audio('./sounds/lighting.mp3');
             snowmanSound.play();
-        img.src = "Snowman_light.png";
+        img.src = "images/Snowman_light.png";
 
     } else {
-        const snowmanSound=new Audio('./no_lighting.mp3');
+        const snowmanSound=new Audio('./sounds/no_lighting.mp3');
             snowmanSound.play();
-        img.src = "Snowman.png";
+        img.src = "images/Snowman.png";
     }
 }
 
@@ -130,17 +130,17 @@ document.getElementById("ticketForm").addEventListener("submit", function(event)
     filter();
 });
 
-document.getElementById("exJSON").addEventListener("click", () => {
+document.getElementById("exJSON").addEventListener("click", (event) => {
     event.preventDefault();
     exportJSON();
 });
 
-document.getElementById("exCSV").addEventListener("click", () => {
+document.getElementById("exCSV").addEventListener("click", (event) => {
     event.preventDefault();
     exportCSV();
 });
 
-document.getElementById("exXML").addEventListener("click", () => {
+document.getElementById("exXML").addEventListener("click", (event) => {
     event.preventDefault();
     exportXML();
 });
@@ -311,17 +311,45 @@ async function listImport() {
         if (!file) {
             throw new Error("No file selected");
         }
-        if (!file.name.toLowerCase().endsWith(".json")) {
-            throw new Error("Invalid file extension. Only JSON files are allowed.");
-        }
 
-        const data = JSON.parse(await file.text());
+        const extension = file.name.split(".").pop().toLowerCase();
+
+        const text = await file.text();
+        let data
+
+        switch(extension) {
+            case "json":
+                data = JSON.parse(text);
+                break;
+            
+            case "csv":
+                const lines = text.trim().split(/\r?\n/)
+                const headers = lines[0].split(",").map(h => h.trim());
+                const requiredHeaders = ["id", "title", "status", "priority"];
+                
+                if (!requiredHeaders.every(header => headers.includes(header))) {
+                    throw new Error("CSV must contain: id, title, status, priority");
+                }
+
+                data = lines.slice(1).map(line => {
+                    const values = line.split(",");
+                    const ticket = {};
+
+                    headers.forEach((header, index) => {
+                        ticket[header] = values[index]?.trim() ?? "";
+                    });
+                    return ticket;
+                })
+                break;
+            default:
+                throw new Error("Invalid file extension. Only JSON and CSV files are allowed.");
+        }
 
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
-            throw new Error("JSON must contain an array");
+            throw new Error("File must contain an array");
         }
         if (data.length >= 1000) {
-            throw new Error("JSON can't contain more than 1000 tickets");
+            throw new Error("File can't contain more than 1000 tickets");
         }
 
         data.forEach(function(ticket) {
@@ -389,7 +417,7 @@ const lisioImg = document.getElementById("Fox");
 function createParticle(x, y) {
   const particle = document.createElement("img");
   particle.classList.add("particle");
-  particle.src = "heart.png";
+  particle.src = "images/heart.png";
   particle.style.left = `${x}px`;
   particle.style.top = `${y}px`;
   
@@ -428,6 +456,8 @@ function exportCSV()
     filename='export.csv';
 
     let textCSV='';
+
+    textCSV+=`id,title,status,priority\n`;
 
     tickets.forEach(i => {
         textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
@@ -472,6 +502,17 @@ document.addEventListener("click", function (event)
     }
 });
 
+// - Jak to jest być skrybą? Dobrze?
+// Moim zdaniem to nie ma tak, że dobrze albo że nie dobrze. 
+// Gdybym miał powiedzieć, co cenię w życiu najbardziej, powiedziałbym, że ludzi. 
+// Ekhm... Ludzi, którzy podali mi pomocną dłoń, kiedy sobie nie radziłem, kiedy byłem sam. 
+// I co ciekawe, to właśnie przypadkowe spotkania wpływają na nasze życie. 
+// Chodzi o to, że kiedy wyznaje się pewne wartości, nawet pozornie uniwersalne, bywa, że nie znajduje się zrozumienia, które by tak rzec, które pomaga się nam rozwijać. 
+// Ja miałem szczęście, by tak rzec, ponieważ je znalazłem. 
+// I dziękuję życiu. 
+// Dziękuję mu, życie to śpiew, życie to taniec, życie to miłość. 
+// Wielu ludzi pyta mnie o to samo, ale jak ty to robisz?, skąd czerpiesz tę radość? 
+// A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy społecznej i będę ot, choćby sadzić... doć... marchew. 
 
 
 function change_mode() {
@@ -1269,5 +1310,4 @@ function change_mode() {
 
 
 
-
-if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
+if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
