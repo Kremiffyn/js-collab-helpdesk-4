@@ -457,6 +457,8 @@ function exportCSV()
 
     let textCSV='';
 
+    textCSV+=`id,title,status,priority\n`;
+
     tickets.forEach(i => {
         textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
     });
