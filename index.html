@@ -98,34 +98,82 @@
 
         </div>
 
-        <div>
-            <input type="file" id="fileInput" accept=".json">
-
-            <p id="message_import"></p>
-        </div>
-
     </div>
     
     <div class="tickets-section">
 
-        <h2>Tickets</h2>
+    <h2>Tickets</h2>
+        
+    <div class="dropdown">
 
-        <button id="exJSON">Export to JSON</button>
-        <button id="exCSV">Export to CSV</button>
-        <button id="exXML">Export to XML</button>
+        <button id="menuButton" type="button">
+            Menu ▼
+        </button>
 
-        <ul id="ticketList">
-        </ul>
+        <div id="menuContent" class="dropdown-content">
 
+            <label for="fileInput" class="dropdown-item">
+                Import
+            </label>
+
+            <div class="dropdown-item export-option">
+                Eksport ▼
+
+                <div class="export-submenu">
+                    <button id="exJSON" type="button">JSON</button>
+                    <button id="exCSV" type="button">CSV</button>
+                    <button id="exXML" type="button">XML</button>
+                </div>
+            </div>
+
+            <div class="dropdown-item" onclick="change_mode()">
+                Change mode
+            </div>
+
+        </div>
+
+    </div>
+
+    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
+
+    <p id="message_import"></p>
+
+    </div>
+
+    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
+
+    <p id="message_import"></p>
+
+    <ul id="ticketList">
+    </ul>
+
+    <div id="importConfirm" class="import-window">
+        <div class="import-content">
+            <h3>Import data</h3>
+            <p>Are you sure you want to import this file?</p>
+            <p id="message_import_confirm"></p>
+            <button onclick="cancelImport()">Cancel</button>
+            <button onclick="confirmImport()">Confirm</button>
+        </div>
+    </div>
+
+    <div id="importConfirm" class="import-window">
+        <div class="import-content">
+            <h3>Import data</h3>
+            <p>Are you sure you want to import this file?</p>
+            <p id="message_import_confirm"></p>
+            <button onclick="cancelImport()">Anuluj</button>
+            <button onclick="confirmImport()">Importuj</button>
+        </div>
     </div>
 
     <img id="Fox" src="images/ArcticFox.png" alt="lisio">
 
-     <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
+    <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
     
     <div class="footer">
 
     </div>
-
+    
 </body>
 </html>
