@@ -326,6 +326,7 @@ async function listImport() {
                 const lines = text.trim().split(/\r?\n/)
                 const headers = lines[0].split(",").map(h => h.trim());
                 const requiredHeaders = ["id", "title", "status", "priority"];
+                
                 if (!requiredHeaders.every(header => headers.includes(header))) {
                     throw new Error("CSV must contain: id, title, status, priority");
                 }
