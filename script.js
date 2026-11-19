@@ -313,7 +313,6 @@ async function listImport() {
         }
 
         const extension = file.name.split(".").pop().toLowerCase();
-
         const text = await file.text();
         let data
 
@@ -370,6 +369,7 @@ async function listImport() {
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
             throw new Error("File must contain an array");
         }
+
         if (data.length >= 1000) {
             throw new Error("File can't contain more than 1000 tickets");
         }
@@ -378,6 +378,7 @@ async function listImport() {
             if (ticket === null || typeof ticket !== "object" || Array.isArray(ticket)) {
                 throw new Error("Ticket must be an object");
             }
+
             if (typeof ticket.id !== "string" ||
                 typeof ticket.title !== "string" ||
                 typeof ticket.status !== "string" ||
@@ -385,20 +386,26 @@ async function listImport() {
             ) {
                 throw new Error("Invalid data structure");
             }
+
             if (!ticket.id || ticket.id.trim().length === 0 || ticket.id.length > 100) {
                 throw new Error("Invalid ticket Id");
             }
+
             if (ticket.title.trim().length < 3 || ticket.title.trim().length > 80) {
                 throw new Error("The title must be between 3 and 80 characters long.");
             }
+
             if (ticket.status !== 'new' && ticket.status !== 'doing' && ticket.status !== 'done') {
                 throw new Error("Invalid ticket Status");
             }
+
             if (ticket.priority !== 'low' && ticket.priority !== 'normal' && ticket.priority !== 'high') {
                 throw new Error("Invalid ticket Priority");
             }
         })
+        
         const ids = data.map(ticket => ticket.id);
+
         if (new Set(ids).size !== ids.length) {
             throw new Error("Ticket IDs must be unique");
         }
