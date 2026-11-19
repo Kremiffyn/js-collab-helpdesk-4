@@ -2,6 +2,7 @@ let ticketCounter = Number(localStorage.getItem("ticketCounter")) || 1;
 let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
 const link = document.createElement('a');
 let filename;
+let qbajzmibpbisqvoqavbqb= Number(localStorage.getItem("qbajzmibpbisqvoqavbqb")) || 0;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -410,7 +411,18 @@ lisioImg.addEventListener("click", function(event) {
   particle.addEventListener("animationend", function() {
     particle.remove();
   });
+
+  qbajzmibpbisqvoqavbqb++;
+  localStorage.setItem("qbajzmibpbisqvoqavbqb",qbajzmibpbisqvoqavbqb);
 });
+
+lisioImg.addEventListener("contextmenu", function(event) {
+    const foxSound=new Audio('./foxSounds/foxsound'+soundId+'.wav');
+    foxSound.play();
+    
+    qbajzmibpbisqvoqavbqb=0;
+    localStorage.setItem("qbajzmibpbisqvoqavbqb",0);
+  });
 
 function exportJSON()
 {
