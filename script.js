@@ -341,8 +341,30 @@ async function listImport() {
                     return ticket;
                 })
                 break;
+
+            case "xml":
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "application/xml");
+
+                if (xml.querySelector("parsererror")) {
+                    throw new Error("Invalid XML file");
+                }
+                if (xml.documentElement.tagName !== "tickets") {
+                    throw new Error("Invalid XML structure");
+                }
+
+                const ticketElements = xml.querySelectorAll("tickets > ticket");
+
+                data = Array.from(ticketElements).map(ticket => ({
+                    id: ticket.getAttribute("id"),
+                    title: ticket.querySelector("title")?.textContent ?? "",
+                    status: ticket.querySelector("status")?.textContent ?? "",
+                    priority: ticket.querySelector("priority")?.textContent ?? ""
+                }))
+                break;
+
             default:
-                throw new Error("Invalid file extension. Only JSON and CSV files are allowed.");
+                throw new Error("Invalid file extension. Only JSON, CSV and XML files are allowed.");
         }
 
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
