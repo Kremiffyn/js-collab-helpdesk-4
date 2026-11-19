@@ -130,17 +130,17 @@ document.getElementById("ticketForm").addEventListener("submit", function(event)
     filter();
 });
 
-document.getElementById("exJSON").addEventListener("click", () => {
+document.getElementById("exJSON").addEventListener("click", (event) => {
     event.preventDefault();
     exportJSON();
 });
 
-document.getElementById("exCSV").addEventListener("click", () => {
+document.getElementById("exCSV").addEventListener("click", (event) => {
     event.preventDefault();
     exportCSV();
 });
 
-document.getElementById("exXML").addEventListener("click", () => {
+document.getElementById("exXML").addEventListener("click", (event) => {
     event.preventDefault();
     exportXML();
 });
@@ -311,17 +311,44 @@ async function listImport() {
         if (!file) {
             throw new Error("No file selected");
         }
-        if (!file.name.toLowerCase().endsWith(".json")) {
-            throw new Error("Invalid file extension. Only JSON files are allowed.");
-        }
 
-        const data = JSON.parse(await file.text());
+        const extension = file.name.split(".").pop().toLowerCase();
+
+        const text = await file.text();
+        let data
+
+        switch(extension) {
+            case "json":
+                data = JSON.parse(text);
+                break;
+            
+            case "csv":
+                const lines = text.trim().split(/\r?\n/)
+                const headers = lines[0].split(",").map(h => h.trim());
+                const requiredHeaders = ["id", "title", "status", "priority"];
+                if (!requiredHeaders.every(header => headers.includes(header))) {
+                    throw new Error("CSV must contain: id, title, status, priority");
+                }
+
+                data = lines.slice(1).map(line => {
+                    const values = line.split(",");
+                    const ticket = {};
+
+                    headers.forEach((header, index) => {
+                        ticket[header] = values[index]?.trim() ?? "";
+                    });
+                    return ticket;
+                })
+                break;
+            default:
+                throw new Error("Invalid file extension. Only JSON and CSV files are allowed.");
+        }
 
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
-            throw new Error("JSON must contain an array");
+            throw new Error("File must contain an array");
         }
         if (data.length >= 1000) {
-            throw new Error("JSON can't contain more than 1000 tickets");
+            throw new Error("File can't contain more than 1000 tickets");
         }
 
         data.forEach(function(ticket) {
