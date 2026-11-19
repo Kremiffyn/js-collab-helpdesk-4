@@ -4,19 +4,17 @@ const link = document.createElement('a');
 let filename;
 
 document.addEventListener('DOMContentLoaded', function () {
-
     const headings = [document.querySelector('h1'), document.querySelector('.tickets-section > h2')];
 
     const colors = ['#ffa81d','#59ce7e','#ffdb45','#398cff','#f247de'];
 
-    function createLights(heading) 
-    {
-
-        if (!heading) return;
+    function createLights(heading) {
+        if (!heading) {
+            return;
+        }
         let lights = heading.querySelector('.title-lights');
 
-        if (!lights) 
-        {
+        if (!lights) {
             lights = document.createElement('div');
             lights.className = 'title-lights';
             heading.appendChild(lights);
@@ -38,31 +36,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const count = Math.floor(perimeter / spacing);
         const actualSpacing = perimeter / count;
 
-        for (let i = 0; i < count; i++) 
-        {
+        for (let i = 0; i < count; i++) {
             const distance = i * actualSpacing;
             let x, y;
 
-            if (distance < horizontal) 
-            {
+            if (distance < horizontal) {
                 x = left + distance;
                 y = top;
-            }
-
-            else if (distance < horizontal + vertical) 
-            {
+            } else if (distance < horizontal + vertical) {
                 x = right;
                 y = top + (distance - horizontal);
-            }
-
-            else if (distance < 2 * horizontal + vertical) 
-            {
+            } else if (distance < 2 * horizontal + vertical) {
                 x = right - (distance - horizontal - vertical);
                 y = bottom;
-            }
-
-            else 
-            {
+            } else {
                 x = left;
                 y = bottom - (distance - 2 * horizontal - vertical);
             }
@@ -70,47 +57,39 @@ document.addEventListener('DOMContentLoaded', function () {
             createBulb(x, y);
         }
 
-        
-    function createBulb(x, y) 
-    {
+        function createBulb(x, y) {
+            const bulb = document.createElement('span');
+            bulb.className = 'title-bulb';
+            bulb.style.left = x + 'px';
+            bulb.style.top = (y + 2.5) + 'px';
 
-       const bulb = document.createElement('span');
-       bulb.className = 'title-bulb';
-       bulb.style.left = x + 'px';
-       bulb.style.top = (y + 2.5) + 'px';
+            bulb.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+            bulb.style.setProperty('--speed', (1.5 + Math.random() * 2) + 's');
+            bulb.style.setProperty('--delay', (Math.random() * 3) + 's');
 
-       bulb.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
-       bulb.style.setProperty('--speed', (1.5 + Math.random() * 2) + 's');
-       bulb.style.setProperty('--delay', (Math.random() * 3) + 's');
-
-       lights.appendChild(bulb);
-    }
-
+            lights.appendChild(bulb);
+        }
     }
 
     headings.forEach(createLights);
 
-    window.addEventListener('resize', function () 
-    {
+    window.addEventListener('resize', function () {
         headings.forEach(createLights);
     });
 
 });
 
 
-function lightSnowman() 
-{
+function lightSnowman() {
     let img = document.getElementById("Snowman");
 
-    if (img.src.includes("images/Snowman.png")) 
-        {
+    if (img.src.includes("images/Snowman.png")) {
             const snowmanSound=new Audio('./sounds/lighting.mp3');
             snowmanSound.play();
-        img.src = "images/Snowman_light.png";
-
+            img.src = "images/Snowman_light.png";
     } else {
         const snowmanSound=new Audio('./sounds/no_lighting.mp3');
-            snowmanSound.play();
+        snowmanSound.play();
         img.src = "images/Snowman.png";
     }
 }
@@ -267,31 +246,26 @@ function filter() {
     document.getElementById("totalCount").textContent = tickets.length;
 }
 
-function changeStatus() 
-{
+function changeStatus() {
     let ticketId = document.getElementById("ticketId").value;
     let newStatus = document.getElementById("newStatus").value;
 
-    if (ticketId.trim() === "" || isNaN(ticketId)) 
-    {
+    if (ticketId.trim() === "" || isNaN(ticketId)) {
         document.getElementById("message_change").textContent = "Ticket ID must be a number.";
         return;
     }
 
     let found = false;
 
-    for (let i = 0; i < tickets.length; i++) 
-    {
-        if (Number(ticketId) === Number(tickets[i].id)) 
-        {
+    for (let i = 0; i < tickets.length; i++) {
+        if (Number(ticketId) === Number(tickets[i].id)) {
             tickets[i].status = newStatus;
             found = true;
             break;
         }
     }
 
-    if (!found)
-    {
+    if (!found){
         document.getElementById("message_change").textContent = "No ticket found with this ID.";
         return;
     }
@@ -318,11 +292,11 @@ async function listImport() {
         let data
 
         switch(extension) {
-            case "json":
+            case "json": {
                 data = JSON.parse(text);
                 break;
-            
-            case "csv":
+            }
+            case "csv": {
                 const lines = text.trim().split(/\r?\n/)
                 const headers = lines[0].split(",").map(h => h.trim());
                 const requiredHeaders = ["id", "title", "status", "priority"];
@@ -341,8 +315,10 @@ async function listImport() {
                     return ticket;
                 })
                 break;
-            default:
+            }
+            default: {
                 throw new Error("Invalid file extension. Only JSON and CSV files are allowed.");
+            }
         }
 
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
@@ -356,27 +332,30 @@ async function listImport() {
             if (ticket === null || typeof ticket !== "object" || Array.isArray(ticket)) {
                 throw new Error("Ticket must be an object");
             }
-            if (typeof ticket.id !== "string" ||
-                typeof ticket.title !== "string" ||
-                typeof ticket.status !== "string" ||
-                typeof ticket.priority !== "string"
-            ) {
+            
+            if (typeof ticket.id !== "string" || typeof ticket.title !== "string" || typeof ticket.status !== "string" || typeof ticket.priority !== "string") {
                 throw new Error("Invalid data structure");
             }
+
             if (!ticket.id || ticket.id.trim().length === 0 || ticket.id.length > 100) {
                 throw new Error("Invalid ticket Id");
             }
+
             if (ticket.title.trim().length < 3 || ticket.title.trim().length > 80) {
                 throw new Error("The title must be between 3 and 80 characters long.");
             }
+
             if (ticket.status !== 'new' && ticket.status !== 'doing' && ticket.status !== 'done') {
                 throw new Error("Invalid ticket Status");
             }
+
             if (ticket.priority !== 'low' && ticket.priority !== 'normal' && ticket.priority !== 'high') {
                 throw new Error("Invalid ticket Priority");
             }
         })
+        
         const ids = data.map(ticket => ticket.id);
+        
         if (new Set(ids).size !== ids.length) {
             throw new Error("Ticket IDs must be unique");
         }
@@ -388,9 +367,7 @@ async function listImport() {
             priority: ticket.priority
         }));
 
-        const numericIds = tickets
-            .map(ticket => Number(ticket.id))
-            .filter(id => Number.isSafeInteger(id) && id >= 0);
+        const numericIds = tickets.map(ticket => Number(ticket.id)).filter(id => Number.isSafeInteger(id) && id >= 0);
 
         ticketCounter = Math.max(0, ...numericIds) + 1;
 
@@ -403,8 +380,7 @@ async function listImport() {
     }
 }
 
-function resetMemory() 
-{
+function resetMemory() {
     tickets = [];
     ticketCounter = 1;
     saveToStorage();
@@ -440,8 +416,7 @@ lisioImg.addEventListener("click", function(event) {
   });
 });
 
-function exportJSON()
-{
+function exportJSON(){
     filename='export.json';
 
     const text = JSON.stringify(tickets);
@@ -451,8 +426,7 @@ function exportJSON()
     link.click();
 }
 
-function exportCSV()
-{
+function exportCSV(){
     filename='export.csv';
 
     let textCSV='';
@@ -468,8 +442,7 @@ function exportCSV()
     link.click();
 }
 
-function exportXML()
-{
+function exportXML(){
     filename='export.xml';
 
     let textXML='<?xml version="1.0" encoding="UTF-8"?>';
@@ -489,15 +462,12 @@ function exportXML()
 const menuButton = document.getElementById("menuButton");
 const menuContent = document.getElementById("menuContent");
 
-menuButton.addEventListener("click", function () 
-{
+menuButton.addEventListener("click", function () {
     menuContent.classList.toggle("show");
 });
 
-document.addEventListener("click", function (event) 
-{
-    if (!event.target.closest(".dropdown")) 
-        {
+document.addEventListener("click", function (event) {
+    if (!event.target.closest(".dropdown")) {
         menuContent.classList.remove("show");
     }
 });
@@ -1310,4 +1280,6 @@ function change_mode() {
 
 
 
-if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
+if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") {
+    document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
+}
