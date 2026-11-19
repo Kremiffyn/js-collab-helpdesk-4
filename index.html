@@ -157,6 +157,23 @@
         </div>
     </div>
 
+    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
+
+    <p id="message_import"></p>
+
+    <ul id="ticketList">
+    </ul>
+
+    <div id="importConfirm" class="import-window">
+        <div class="import-content">
+            <h3>Import data</h3>
+            <p>Are you sure you want to import this file?</p>
+            <p id="message_import_confirm"></p>
+            <button onclick="cancelImport()">Anuluj</button>
+            <button onclick="confirmImport()">Importuj</button>
+        </div>
+    </div>
+
     <img id="Fox" src="images/ArcticFox.png" alt="lisio">
 
     <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
