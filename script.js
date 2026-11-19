@@ -2,6 +2,7 @@ let ticketCounter = Number(localStorage.getItem("ticketCounter")) || 1;
 let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
 const link = document.createElement('a');
 let filename;
+let qbajzmibpbisqvoqavbqb= Number(localStorage.getItem("qbajzmibpbisqvoqavbqb")) || 0;
 
 document.addEventListener('DOMContentLoaded', function () {
     const headings = [document.querySelector('h1'), document.querySelector('.tickets-section > h2')];
@@ -442,7 +443,7 @@ function createParticle(x, y) {
 
 lisioImg.addEventListener("click", function(event) {
   let soundId=Math.floor(Math.random() * 9)+1;
-  const foxSound=new Audio('./foxSounds/foxsound'+soundId+'.wav');
+  const foxSound=new Audio('./sounds/foxSounds/foxsound'+soundId+'.wav');
   foxSound.play();
 
   const x = event.pageX;
@@ -453,9 +454,24 @@ lisioImg.addEventListener("click", function(event) {
   particle.addEventListener("animationend", function() {
     particle.remove();
   });
+
+  qbajzmibpbisqvoqavbqb++;
+  if(qbajzmibpbisqvoqavbqb>=10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
+  localStorage.setItem("qbajzmibpbisqvoqavbqb",qbajzmibpbisqvoqavbqb);
+  console.log(qbajzmibpbisqvoqavbqb);
 });
 
-function exportJSON(){
+lisioImg.addEventListener("contextmenu", function(event) {
+    const foxSound=new Audio('./sounds/foxSounds/foxsound7.wav');
+    foxSound.play();
+    document.getElementById("backgroundMusic").src='./sounds/music.mp3';
+    
+    qbajzmibpbisqvoqavbqb=0;
+    localStorage.setItem("qbajzmibpbisqvoqavbqb",0);
+  });
+
+function exportJSON()
+{
     filename='export.json';
 
     const text = JSON.stringify(tickets);
