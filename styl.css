@@ -12,7 +12,7 @@ body {
     font-family: Comic Sans MS;
     color: #3D3D3B;
     animation: snow_animation 10s linear infinite;
-    background-image: url('snow.png');
+    background-image: url('images/snow.png');
 }
 
 
@@ -215,7 +215,7 @@ p {
 }
 
 .footer {
-    background-image: url('snow_footer.png');
+    background-image: url('images/snow_footer.png');
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: 100% 100%;
@@ -288,4 +288,75 @@ h1, .tickets-section > h2 {
     0% {opacity: 0.65;filter: brightness(0.9);}
 
     100% {opacity: 1; filter: brightness(1.5);}
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin: 10px 0 10px 25px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background-color: #DCDCDC;
+    border: 2px solid #3D3D3B;
+    border-radius: 10px;
+    z-index: 10;
+    overflow: visible;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: #3D3D3B;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background-color: #3D3D3B;
+    color: #DCDCDC;
+}
+
+.export-option {
+    position: relative;
+}
+
+.export-submenu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    min-width: 120px;
+    background-color: #DCDCDC;
+    border: 2px solid #3D3D3B;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.export-option:hover .export-submenu {
+    display: block;
+}
+
+.export-submenu button {
+    display: block;
+    width: 100%;
+    margin: 3px 0;
+}
+
+.dark-mode {
+  background-color: rgb(22, 12, 85);
+  color: white;
+}
+
+.dark-mode .panel h2 {
+    color: white;
 }

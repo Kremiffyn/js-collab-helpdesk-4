@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const horizontal = right - left;
         const vertical = bottom - top;
         const perimeter = 2 * (horizontal + vertical);
-        const spacing = 55;
+        const spacing = 100;
         const count = Math.floor(perimeter / spacing);
         const actualSpacing = perimeter / count;
 
@@ -479,6 +479,8 @@ function exportCSV()
 
     let textCSV='';
 
+    textCSV+=`id,title,status,priority\n`;
+
     tickets.forEach(i => {
         textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
     });
@@ -506,6 +508,21 @@ function exportXML()
 }
 
 
+const menuButton = document.getElementById("menuButton");
+const menuContent = document.getElementById("menuContent");
+
+menuButton.addEventListener("click", function () 
+{
+    menuContent.classList.toggle("show");
+});
+
+document.addEventListener("click", function (event) 
+{
+    if (!event.target.closest(".dropdown")) 
+        {
+        menuContent.classList.remove("show");
+    }
+});
 
 // - Jak to jest być skrybą? Dobrze?
 // Moim zdaniem to nie ma tak, że dobrze albo że nie dobrze. 
@@ -520,10 +537,9 @@ function exportXML()
 // A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy społecznej i będę ot, choćby sadzić... doć... marchew. 
 
 
-
-
-
-
+function change_mode() {
+    document.body.classList.toggle("dark-mode");
+}
 
 
 
