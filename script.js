@@ -102,16 +102,16 @@ function lightSnowman()
 {
     let img = document.getElementById("Snowman");
 
-    if (img.src.includes("Snowman.png")) 
+    if (img.src.includes("images/Snowman.png")) 
         {
-            const snowmanSound=new Audio('./lighting.mp3');
+            const snowmanSound=new Audio('./sounds/lighting.mp3');
             snowmanSound.play();
-        img.src = "Snowman_light.png";
+        img.src = "images/Snowman_light.png";
 
     } else {
-        const snowmanSound=new Audio('./no_lighting.mp3');
+        const snowmanSound=new Audio('./sounds/no_lighting.mp3');
             snowmanSound.play();
-        img.src = "Snowman.png";
+        img.src = "images/Snowman.png";
     }
 }
 
@@ -416,7 +416,7 @@ const lisioImg = document.getElementById("Fox");
 function createParticle(x, y) {
   const particle = document.createElement("img");
   particle.classList.add("particle");
-  particle.src = "heart.png";
+  particle.src = "images/heart.png";
   particle.style.left = `${x}px`;
   particle.style.top = `${y}px`;
   
@@ -484,6 +484,17 @@ function exportXML()
 
 
 
+// - Jak to jest być skrybą? Dobrze?
+// Moim zdaniem to nie ma tak, że dobrze albo że nie dobrze. 
+// Gdybym miał powiedzieć, co cenię w życiu najbardziej, powiedziałbym, że ludzi. 
+// Ekhm... Ludzi, którzy podali mi pomocną dłoń, kiedy sobie nie radziłem, kiedy byłem sam. 
+// I co ciekawe, to właśnie przypadkowe spotkania wpływają na nasze życie. 
+// Chodzi o to, że kiedy wyznaje się pewne wartości, nawet pozornie uniwersalne, bywa, że nie znajduje się zrozumienia, które by tak rzec, które pomaga się nam rozwijać. 
+// Ja miałem szczęście, by tak rzec, ponieważ je znalazłem. 
+// I dziękuję życiu. 
+// Dziękuję mu, życie to śpiew, życie to taniec, życie to miłość. 
+// Wielu ludzi pyta mnie o to samo, ale jak ty to robisz?, skąd czerpiesz tę radość? 
+// A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy społecznej i będę ot, choćby sadzić... doć... marchew. 
 
 
 
@@ -1282,5 +1293,4 @@ function exportXML()
 
 
 
-
-if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
+if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
