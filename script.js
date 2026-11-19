@@ -429,7 +429,7 @@ function exportCSV()
 
     let textCSV='';
 
-    textCSV+=`tickets.id,tickets.title,tickets.status,tickets.priority\n`;
+    textCSV+=`id,title,status,priority\n`;
 
     tickets.forEach(i => {
         textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
