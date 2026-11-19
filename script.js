@@ -275,7 +275,28 @@ function changeStatus() {
     filter();
 }
 
-document.getElementById("fileInput").addEventListener("change", listImport);
+document.getElementById("fileInput").addEventListener("change", function() {
+    if (this.files.length > 0) {
+        showImportWindow();
+    }
+});
+
+function showImportWindow() {
+    document.getElementById("importConfirm").style.display = "flex";
+    document.getElementById("message_import_confirm").textContent = `file: ${document.getElementById("fileInput").files[0].name}`;
+}
+
+function cancelImport() {
+    document.getElementById("importConfirm").style.display = "none";
+
+    document.getElementById("fileInput").value = "";
+}
+
+function confirmImport() {
+    document.getElementById("importConfirm").style.display = "none";
+
+    listImport();
+}
 
 async function listImport() {
     try {
@@ -287,7 +308,6 @@ async function listImport() {
         }
 
         const extension = file.name.split(".").pop().toLowerCase();
-
         const text = await file.text();
         let data
 
@@ -316,14 +336,36 @@ async function listImport() {
                 })
                 break;
             }
+            case "xml": {
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "application/xml");
+
+                if (xml.querySelector("parsererror")) {
+                    throw new Error("Invalid XML file");
+                }
+                if (xml.documentElement.tagName !== "tickets") {
+                    throw new Error("Invalid XML structure");
+                }
+
+                const ticketElements = xml.querySelectorAll("tickets > ticket");
+
+                data = Array.from(ticketElements).map(ticket => ({
+                    id: ticket.getAttribute("id"),
+                    title: ticket.querySelector("title")?.textContent ?? "",
+                    status: ticket.querySelector("status")?.textContent ?? "",
+                    priority: ticket.querySelector("priority")?.textContent ?? ""
+                }))
+                break;
+            }
             default: {
-                throw new Error("Invalid file extension. Only JSON and CSV files are allowed.");
+                throw new Error("Invalid file extension. Only JSON, CSV and XML files are allowed.");
             }
         }
 
         if (data === null || typeof data !== "object" || !Array.isArray(data)) {
             throw new Error("File must contain an array");
         }
+
         if (data.length >= 1000) {
             throw new Error("File can't contain more than 1000 tickets");
         }
@@ -355,7 +397,7 @@ async function listImport() {
         })
         
         const ids = data.map(ticket => ticket.id);
-        
+
         if (new Set(ids).size !== ids.length) {
             throw new Error("Ticket IDs must be unique");
         }
