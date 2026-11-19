@@ -474,9 +474,9 @@ document.addEventListener("click", function (event)
 
 
 
-
-
-
+function change_mode() {
+    document.body.classList.toggle("dark-mode");
+}
 
 
 

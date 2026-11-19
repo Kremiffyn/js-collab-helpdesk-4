@@ -103,11 +103,12 @@
     <div class="tickets-section">
 
         <h2>Tickets</h2>
-
-        <div class="dropdown">
+        
+        
+<div class="dropdown">
 
     <button id="menuButton" type="button">
-        Import / Eksport ▼
+        Menu ▼
     </button>
 
     <div id="menuContent" class="dropdown-content">
@@ -120,13 +121,24 @@
             Eksport ▼
 
             <div class="export-submenu">
-                <button id="exJSON">JSON</button>
-                <button id="exCSV">CSV</button>
-                <button id="exXML">XML</button>
+                <button id="exJSON" type="button">JSON</button>
+                <button id="exCSV" type="button">CSV</button>
+                <button id="exXML" type="button">XML</button>
             </div>
         </div>
 
+        <div class="dropdown-item" onclick="change_mode()">
+            Change mode
+        </div>
+
     </div>
+
+</div>
+
+<input type="file" id="fileInput" accept=".json" hidden>
+
+<p id="message_import"></p>
+
 
 </div>
 

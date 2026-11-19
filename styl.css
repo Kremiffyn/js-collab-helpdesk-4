@@ -351,3 +351,14 @@ h1, .tickets-section > h2 {
     width: 100%;
     margin: 3px 0;
 }
+
+.dark-mode {
+  background-color: rgb(22, 12, 85);
+  color: white;
+}
+
+.dark-mode label,
+.dark-mode p,
+.dark-mode .panel h2 {
+    color: white;
+}
