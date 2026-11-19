@@ -301,7 +301,28 @@ function changeStatus()
     filter();
 }
 
-document.getElementById("fileInput").addEventListener("change", listImport);
+document.getElementById("fileInput").addEventListener("change", function() {
+    if (this.files.length > 0) {
+        showImportWindow();
+    }
+});
+
+function showImportWindow() {
+    document.getElementById("importConfirm").style.display = "flex";
+    document.getElementById("message_import_confirm").textContent = `file: ${document.getElementById("fileInput").files[0].name}`;
+}
+
+function cancelImport() {
+    document.getElementById("importConfirm").style.display = "none";
+
+    document.getElementById("fileInput").value = "";
+}
+
+function confirmImport() {
+    document.getElementById("importConfirm").style.display = "none";
+
+    listImport();
+}
 
 async function listImport() {
     try {
