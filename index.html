@@ -102,54 +102,50 @@
     
     <div class="tickets-section">
 
-        <h2>Tickets</h2>
+    <h2>Tickets</h2>
         
-        
-<div class="dropdown">
+    <div class="dropdown">
 
-    <button id="menuButton" type="button">
-        Menu ▼
-    </button>
+        <button id="menuButton" type="button">
+            Menu ▼
+        </button>
 
-    <div id="menuContent" class="dropdown-content">
+        <div id="menuContent" class="dropdown-content">
 
-        <label for="fileInput" class="dropdown-item">
-            Import
-        </label>
+            <label for="fileInput" class="dropdown-item">
+                Import
+            </label>
 
-        <div class="dropdown-item export-option">
-            Eksport ▼
+            <div class="dropdown-item export-option">
+                Eksport ▼
 
-            <div class="export-submenu">
-                <button id="exJSON" type="button">JSON</button>
-                <button id="exCSV" type="button">CSV</button>
-                <button id="exXML" type="button">XML</button>
+                <div class="export-submenu">
+                    <button id="exJSON" type="button">JSON</button>
+                    <button id="exCSV" type="button">CSV</button>
+                    <button id="exXML" type="button">XML</button>
+                </div>
             </div>
-        </div>
 
-        <div class="dropdown-item" onclick="change_mode()">
-            Change mode
+            <div class="dropdown-item" onclick="change_mode()">
+                Change mode
+            </div>
+
         </div>
 
     </div>
 
-</div>
+    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
 
-<input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
-
-<p id="message_import"></p>
-
-
-</div>
-
-<input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
-
-<p id="message_import"></p>
-
-        <ul id="ticketList">
-        </ul>
+    <p id="message_import"></p>
 
     </div>
+
+    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
+
+    <p id="message_import"></p>
+
+    <ul id="ticketList">
+    </ul>
 
     <div id="importConfirm" class="import-window">
         <div class="import-content">
@@ -163,12 +159,11 @@
 
     <img id="Fox" src="images/ArcticFox.png" alt="lisio">
 
-     <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
+    <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
     
     <div class="footer">
 
     </div>
-
     
 </body>
 </html>
