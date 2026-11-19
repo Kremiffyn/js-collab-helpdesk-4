@@ -98,21 +98,41 @@
 
         </div>
 
-        <div>
-            <input type="file" id="fileInput" accept=".json">
-
-            <p id="message_import"></p>
-        </div>
-
     </div>
     
     <div class="tickets-section">
 
         <h2>Tickets</h2>
 
-        <button id="exJSON">Export to JSON</button>
-        <button id="exCSV">Export to CSV</button>
-        <button id="exXML">Export to XML</button>
+        <div class="dropdown">
+
+    <button id="menuButton" type="button">
+        Import / Eksport ▼
+    </button>
+
+    <div id="menuContent" class="dropdown-content">
+
+        <label for="fileInput" class="dropdown-item">
+            Import
+        </label>
+
+        <div class="dropdown-item export-option">
+            Eksport ▼
+
+            <div class="export-submenu">
+                <button id="exJSON">JSON</button>
+                <button id="exCSV">CSV</button>
+                <button id="exXML">XML</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<input type="file" id="fileInput" accept=".json" hidden>
+
+<p id="message_import"></p>
 
         <ul id="ticketList">
         </ul>

@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const horizontal = right - left;
         const vertical = bottom - top;
         const perimeter = 2 * (horizontal + vertical);
-        const spacing = 55;
+        const spacing = 100;
         const count = Math.floor(perimeter / spacing);
         const actualSpacing = perimeter / count;
 
@@ -456,7 +456,21 @@ function exportXML()
 }
 
 
+const menuButton = document.getElementById("menuButton");
+const menuContent = document.getElementById("menuContent");
 
+menuButton.addEventListener("click", function () 
+{
+    menuContent.classList.toggle("show");
+});
+
+document.addEventListener("click", function (event) 
+{
+    if (!event.target.closest(".dropdown")) 
+        {
+        menuContent.classList.remove("show");
+    }
+});
 
 
 
