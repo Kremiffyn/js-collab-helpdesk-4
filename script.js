@@ -1,21 +1,170 @@
-let ticketCounter = Number(localStorage.getItem("ticketCounter")) || 1;
-let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
-const link = document.createElement('a');
-let filename;
-let qbajzmibpbisqvoqavbqb= Number(localStorage.getItem("qbajzmibpbisqvoqavbqb")) || 0;
+function loadTickets() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem("tickets"));
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
+
+function loadTicketCounter(list) {
+    const stored = Number(localStorage.getItem("ticketCounter")) || 1;
+    const maxId = list
+        .map(ticket => Number(ticket && ticket.id))
+        .filter(id => Number.isSafeInteger(id) && id >= 0)
+        .reduce((max, id) => Math.max(max, id), 0);
+    return Math.max(stored, maxId + 1);
+}
+
+export let tickets = loadTickets();
+export let ticketCounter = loadTicketCounter(tickets);
+export let link = document.createElement('a');
+export let filename;
+export let qbajzmibpbisqvoqavbqb = Number(localStorage.getItem("qbajzmibpbisqvoqavbqb")) || 0;
+const lisioImg = document.getElementById("Fox");
+export { lisioImg };
+
+//qbajzmibpbisqvoqavbqb
+export function setQbajzmibpbisqvoqavbqb(arg){
+    qbajzmibpbisqvoqavbqb=arg;
+    localStorage.setItem("qbajzmibpbisqvoqavbqb",arg);
+}
+
+export function getQbajzmibpbisqvoqavbqb(){
+    return qbajzmibpbisqvoqavbqb;
+}
+
+//tickets
+export function settickets(arg) {
+    tickets = arg;
+    localStorage.setItem("tickets", JSON.stringify(arg));
+}
+
+export function gettickets(){
+    return tickets;
+}
+
+//ticketCounter
+export function setticketCounter(arg){
+    ticketCounter=arg;
+    localStorage.setItem("ticketCounter",arg);
+}
+
+export function getticketCounter(){
+    return ticketCounter;
+}
+
+//link
+export function setlink(arg){
+    link=arg;
+}
+
+export function getlink(){
+    return link;
+}
+
+//filename
+export function setfilename(arg){
+    filename=arg;
+}
+
+export function getfilename(){
+    return filename;
+}
+
+async function loadSnowmanModule(){
+    try{
+        const module = await import('./scripts/snowman.js');
+        
+        module.initSnowman();
+    }
+
+    catch (error) {
+        console.error("Failed to load snowman module:", error);
+    }
+}
+
+async function loadFoxModule(){
+    try{
+        const module = await import('./scripts/lisLogic.js');
+        
+        module.initLisLogic();
+    }
+
+    catch (error) {
+        console.error("Failed to load lisLogic module:", error);
+    }
+}
+
+async function loadTicketLogic(){
+    try{
+        const module = await import('./scripts/ticketLogic.js');
+        
+        module.initTicketLogic();
+    }
+
+    catch (error) {
+        console.error("Failed to load ticketLogic module:", error);
+    }
+}
+
+async function loadExport(){
+    try{
+        const module = await import('./scripts/export.js');
+        
+        module.initExport();
+    }
+
+    catch (error) {
+        console.error("Failed to load export module:", error);
+    }
+}
+
+async function loadImport(){
+    try{
+        const module = await import('./scripts/import.js');
+        
+        module.initImport();
+    }
+
+    catch (error) {
+        console.error("Failed to load import module:", error);
+    }
+}
+
+async function loadInteractionLogic(){
+    try{
+        const module = await import('./scripts/interactionLogic.js');
+        
+        module.initInteractionLogic();
+    }
+
+    catch (error) {
+        console.error("Failed to load interactionLogic module:", error);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    loadInteractionLogic()
+    loadTicketLogic();
+    loadSnowmanModule();
+    loadFoxModule();
+    loadExport();
+    loadImport();
+
     const headings = [document.querySelector('h1'), document.querySelector('.tickets-section > h2')];
 
     const colors = ['#ffa81d','#59ce7e','#ffdb45','#398cff','#f247de'];
 
-    function createLights(heading) {
-        if (!heading) {
-            return;
-        }
+    function createLights(heading) 
+    {
+
+        if (!heading) return;
         let lights = heading.querySelector('.title-lights');
 
-        if (!lights) {
+        if (!lights) 
+        {
             lights = document.createElement('div');
             lights.className = 'title-lights';
             heading.appendChild(lights);
@@ -37,20 +186,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const count = Math.floor(perimeter / spacing);
         const actualSpacing = perimeter / count;
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) 
+        {
             const distance = i * actualSpacing;
             let x, y;
 
-            if (distance < horizontal) {
+            if (distance < horizontal) 
+            {
                 x = left + distance;
                 y = top;
-            } else if (distance < horizontal + vertical) {
+            }
+
+            else if (distance < horizontal + vertical) 
+            {
                 x = right;
                 y = top + (distance - horizontal);
-            } else if (distance < 2 * horizontal + vertical) {
+            }
+
+            else if (distance < 2 * horizontal + vertical) 
+            {
                 x = right - (distance - horizontal - vertical);
                 y = bottom;
-            } else {
+            }
+
+            else 
+            {
                 x = left;
                 y = bottom - (distance - 2 * horizontal - vertical);
             }
@@ -58,477 +218,33 @@ document.addEventListener('DOMContentLoaded', function () {
             createBulb(x, y);
         }
 
-        function createBulb(x, y) {
-            const bulb = document.createElement('span');
-            bulb.className = 'title-bulb';
-            bulb.style.left = x + 'px';
-            bulb.style.top = (y + 2.5) + 'px';
+            
+        function createBulb(x, y) 
+        {
 
-            bulb.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
-            bulb.style.setProperty('--speed', (1.5 + Math.random() * 2) + 's');
-            bulb.style.setProperty('--delay', (Math.random() * 3) + 's');
+        const bulb = document.createElement('span');
+        bulb.className = 'title-bulb';
+        bulb.style.left = x + 'px';
+        bulb.style.top = (y + 2.5) + 'px';
 
-            lights.appendChild(bulb);
+        bulb.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+        bulb.style.setProperty('--speed', (1.5 + Math.random() * 2) + 's');
+        bulb.style.setProperty('--delay', (Math.random() * 3) + 's');
+
+        lights.appendChild(bulb);
         }
-    }
 
-    headings.forEach(createLights);
+        }
 
-    window.addEventListener('resize', function () {
         headings.forEach(createLights);
-    });
 
-});
-
-function lightSnowman() {
-    let img = document.getElementById("Snowman");
-
-    if (img.src.includes("images/Snowman.png")) {
-            const snowmanSound=new Audio('./sounds/lighting.mp3');
-            snowmanSound.play();
-            img.src = "images/Snowman_light.png";
-    } else {
-        const snowmanSound=new Audio('./sounds/no_lighting.mp3');
-        snowmanSound.play();
-        img.src = "images/Snowman.png";
-    }
-}
-
-function saveToStorage() {
-    localStorage.setItem("tickets", JSON.stringify(tickets));
-    localStorage.setItem("ticketCounter", ticketCounter);
-}
-
-window.onload = function(){
-    filter();
-}
-
-document.getElementById("ticketForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    addTicket();
-    filter();
-});
-
-document.getElementById("exJSON").addEventListener("click", (event) => {
-    event.preventDefault();
-    exportJSON();
-});
-
-document.getElementById("exCSV").addEventListener("click", (event) => {
-    event.preventDefault();
-    exportCSV();
-});
-
-document.getElementById("exXML").addEventListener("click", (event) => {
-    event.preventDefault();
-    exportXML();
-});
-
-document.getElementById("statusFilter").addEventListener("change", filter);
-
-function createTicketRow(ticket) {
-    const li = document.createElement("li");
-
-    const p1 = document.createElement("p");
-    p1.textContent = "Id: " + ticket.id;
-
-    const p2 = document.createElement("p");
-    p2.textContent = "Title: " + ticket.title;
-
-    const p3 = document.createElement("p");
-    p3.textContent = "Status: " + ticket.status;
-
-    const p4 = document.createElement("p");
-    p4.textContent = "Priority: " + ticket.priority;
-
-    li.appendChild(p1);
-    li.appendChild(p2);
-    li.appendChild(p3);
-    li.appendChild(p4);
-
-    return li;
-}
-
-function dataSanitization(id, title, status, priority) {
-    const messageEl = document.getElementById("message_add");
-    
-    if (tickets.length >= 1000) {
-        if (messageEl) {
-            messageEl.textContent = "The maximum limit of 1000 tickets has been reached.";
-        }
-        return false;
-    }
-
-    if (!id || typeof id !== "string" || id.trim().length === 0 || id.length > 100) {
-        if (messageEl) {
-            messageEl.textContent = "Invalid ticket ID.";
-        }
-        return false;
-    }
-
-    const trimmedTitle = title ? title.trim() : "";
-    if (trimmedTitle.length < 3 || trimmedTitle.length > 80) {
-        if (messageEl) {
-            messageEl.textContent = "The title must be between 3 and 80 characters long.";
-        } 
-        return false;
-    }
-
-    if (status !== 'new' && status !== 'doing' && status !== 'done') {
-        if (messageEl) {
-            messageEl.textContent = "Invalid ticket status.";
-        }
-        return false;
-    }
-
-    if (priority !== 'low' && priority !== 'normal' && priority !== 'high') {
-        if (messageEl) {
-            messageEl.textContent = "Invalid ticket priority.";
-        }
-        return false;
-    }
-
-    if (messageEl) {
-        messageEl.textContent = "";
-    }
-    return true;
-}
-
-function addTicket() {
-    const form = document.getElementById('ticketForm');
-    const formData = new FormData(form);
-
-    const rawTitle = formData.get('title') || "";
-    const cleanTitle = rawTitle.trim();
-    const priority = formData.get('priority') || "normal";
-    const status = 'new';
-    const id = String(ticketCounter);
-
-    if (dataSanitization(id, cleanTitle, status, priority)) {
-        tickets.push({
-            id: id,
-            title: cleanTitle,
-            status: status,
-            priority: priority
+        window.addEventListener('resize', function () 
+        {
+            headings.forEach(createLights);
         });
 
-        ticketCounter += 1;
-        saveToStorage();
-        form.reset();
-    }
-}
-
-function filter() {
-    const value_filter = document.getElementById("statusFilter").value;
-    const list = document.getElementById("ticketList");
-
-    list.innerHTML = "";
-
-    let visibleCount = 0;
-
-    for (let i = 0; i < tickets.length; i++) {
-        if (value_filter === "all" || tickets[i].status === value_filter) {
-            const ticketRow = createTicketRow(tickets[i]);
-            list.appendChild(ticketRow);
-            visibleCount++;
-        }
-    }
-
-    if (visibleCount === 0) {
-        const emptyLi = document.createElement("li");
-        emptyLi.textContent = "No tickets to display.";
-        emptyLi.style.textAlign = "center";
-        emptyLi.style.fontStyle = "italic";
-        list.appendChild(emptyLi);
-    }
-
-    document.getElementById("visibleCount").textContent = visibleCount;
-    document.getElementById("totalCount").textContent = tickets.length;
-}
-
-function changeStatus() {
-    let ticketId = document.getElementById("ticketId").value;
-    let newStatus = document.getElementById("newStatus").value;
-
-    if (ticketId.trim() === "" || isNaN(ticketId)) {
-        document.getElementById("message_change").textContent = "Ticket ID must be a number.";
-        return;
-    }
-
-    let found = false;
-
-    for (let i = 0; i < tickets.length; i++) {
-        if (Number(ticketId) === Number(tickets[i].id)) {
-            tickets[i].status = newStatus;
-            found = true;
-            break;
-        }
-    }
-
-    if (!found){
-        document.getElementById("message_change").textContent = "No ticket found with this ID.";
-        return;
-    }
-
-    saveToStorage();
-    document.getElementById("message_change").textContent = "Ticket status updated successfully.";
-    filter();
-}
-
-document.getElementById("fileInput").addEventListener("change", function() {
-    if (this.files.length > 0) {
-        showImportWindow();
-    }
-});
-
-function showImportWindow() {
-    document.getElementById("importConfirm").style.display = "flex";
-    document.getElementById("message_import_confirm").textContent = `file: ${document.getElementById("fileInput").files[0].name}`;
-}
-
-function cancelImport() {
-    document.getElementById("importConfirm").style.display = "none";
-    document.getElementById("fileInput").value = "";
-}
-
-function confirmImport() {
-    document.getElementById("importConfirm").style.display = "none";
-    listImport();
-}
-
-async function listImport() {
-    try {
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
-
-        if (!file) {
-            throw new Error("No file selected");
-        }
-
-        const extension = file.name.split(".").pop().toLowerCase();
-        const text = await file.text();
-        let data
-
-        switch(extension) {
-            case "json": {
-                data = JSON.parse(text);
-                break;
-            }
-            case "csv": {
-                const lines = text.trim().split(/\r?\n/)
-                const headers = lines[0].split(",").map(h => h.trim());
-                const requiredHeaders = ["id", "title", "status", "priority"];
-                
-                if (!requiredHeaders.every(header => headers.includes(header))) {
-                    throw new Error("CSV must contain: id, title, status, priority");
-                }
-
-                data = lines.slice(1).map(line => {
-                    const values = line.split(",");
-                    const ticket = {};
-
-                    headers.forEach((header, index) => {
-                        ticket[header] = values[index]?.trim() ?? "";
-                    });
-                    return ticket;
-                })
-                break;
-            }
-            case "xml": {
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "application/xml");
-
-                if (xml.querySelector("parsererror")) {
-                    throw new Error("Invalid XML file");
-                }
-                if (xml.documentElement.tagName !== "tickets") {
-                    throw new Error("Invalid XML structure");
-                }
-
-                const ticketElements = xml.querySelectorAll("tickets > ticket");
-
-                data = Array.from(ticketElements).map(ticket => ({
-                    id: ticket.getAttribute("id"),
-                    title: ticket.querySelector("title")?.textContent ?? "",
-                    status: ticket.querySelector("status")?.textContent ?? "",
-                    priority: ticket.querySelector("priority")?.textContent ?? ""
-                }))
-                break;
-            }
-            default: {
-                throw new Error("Invalid file extension. Only JSON, CSV and XML files are allowed.");
-            }
-        }
-
-        if (data === null || typeof data !== "object" || !Array.isArray(data)) {
-            throw new Error("File must contain an array");
-        }
-
-        if (data.length >= 1000) {
-            throw new Error("File can't contain more than 1000 tickets");
-        }
-
-        data.forEach(function(ticket) {
-            if (ticket === null || typeof ticket !== "object" || Array.isArray(ticket)) {
-                throw new Error("Ticket must be an object");
-            }
-            
-            if (typeof ticket.id !== "string" || typeof ticket.title !== "string" || typeof ticket.status !== "string" || typeof ticket.priority !== "string") {
-                throw new Error("Invalid data structure");
-            }
-
-            if (!ticket.id || ticket.id.trim().length === 0 || ticket.id.length > 100) {
-                throw new Error("Invalid ticket Id");
-            }
-
-            if (ticket.title.trim().length < 3 || ticket.title.trim().length > 80) {
-                throw new Error("The title must be between 3 and 80 characters long.");
-            }
-
-            if (ticket.status !== 'new' && ticket.status !== 'doing' && ticket.status !== 'done') {
-                throw new Error("Invalid ticket Status");
-            }
-
-            if (ticket.priority !== 'low' && ticket.priority !== 'normal' && ticket.priority !== 'high') {
-                throw new Error("Invalid ticket Priority");
-            }
-        })
-        
-        const ids = data.map(ticket => ticket.id);
-
-        if (new Set(ids).size !== ids.length) {
-            throw new Error("Ticket IDs must be unique");
-        }
-        
-        tickets = data.map(ticket => ({
-            id: ticket.id,
-            title: ticket.title.trim(),
-            status: ticket.status,
-            priority: ticket.priority
-        }));
-
-        const numericIds = tickets.map(ticket => Number(ticket.id)).filter(id => Number.isSafeInteger(id) && id >= 0);
-
-        ticketCounter = Math.max(0, ...numericIds) + 1;
-
-        saveToStorage();
-        document.getElementById('ticketForm').reset();
-        filter();
-        document.getElementById("message_import").textContent = "Import succesful";
-    } catch (error) {
-        document.getElementById("message_import").textContent = error.message;
-    }
-}
-
-function resetMemory() {
-    tickets = [];
-    ticketCounter = 1;
-    saveToStorage();
-    filter();
-}
-
-// LisLogic
-const lisioImg = document.getElementById("Fox");
-
-function createParticle(x, y) {
-  const particle = document.createElement("img");
-  particle.classList.add("particle");
-  particle.src = "images/heart.png";
-  particle.style.left = `${x}px`;
-  particle.style.top = `${y}px`;
-  
-  document.body.appendChild(particle);
-  return particle;
-}
-
-lisioImg.addEventListener("click", function(event) {
-  let soundId=Math.floor(Math.random() * 9)+1;
-  const foxSound=new Audio('./sounds/foxSounds/foxsound'+soundId+'.wav');
-  foxSound.play();
-
-  const x = event.pageX;
-  const y = event.pageY;
-  
-  const particle = createParticle(x, y);
-  
-  particle.addEventListener("animationend", function() {
-    particle.remove();
-  });
-
-  qbajzmibpbisqvoqavbqb++;
-  if(qbajzmibpbisqvoqavbqb>=10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
-  localStorage.setItem("qbajzmibpbisqvoqavbqb",qbajzmibpbisqvoqavbqb);
-  console.log(qbajzmibpbisqvoqavbqb);
-});
-
-lisioImg.addEventListener("contextmenu", function(event) {
-    const foxSound=new Audio('./sounds/foxSounds/foxsound7.wav');
-    foxSound.play();
-    document.getElementById("backgroundMusic").src='./sounds/music.mp3';
-    
-    qbajzmibpbisqvoqavbqb=0;
-    localStorage.setItem("qbajzmibpbisqvoqavbqb",0);
-  });
-
-function exportJSON()
-{
-    filename='export.json';
-
-    const text = JSON.stringify(tickets);
-
-    link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(text);
-    link.download = filename;
-    link.click();
-}
-
-function exportCSV(){
-    filename='export.csv';
-
-    let textCSV='';
-
-    textCSV+=`id,title,status,priority\n`;
-
-    tickets.forEach(i => {
-        textCSV+=`${i.id},${i.title},${i.status},${i.priority}\n`
+        if(qbajzmibpbisqvoqavbqb>=10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
     });
-    
-    link.href = 'data:application/csv;charset=utf-8,' + encodeURIComponent(textCSV);
-    link.download = filename;
-    link.click();
-}
-
-function exportXML(){
-    filename='export.xml';
-
-    let textXML='<?xml version="1.0" encoding="UTF-8"?>';
-    textXML+='<tickets>';
-
-    tickets.forEach(i => {
-        textXML+=`<ticket id="${i.id}"><title>${i.title}</title><status>${i.status}</status><priority>${i.priority}</priority></ticket>`
-    });
-   
-    textXML+='</tickets>';
-    link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(textXML);
-    link.download = filename;
-    link.click();
-}
-
-const menuButton = document.getElementById("menuButton");
-const menuContent = document.getElementById("menuContent");
-
-menuButton.addEventListener("click", function () {
-    menuContent.classList.toggle("show");
-});
-
-document.addEventListener("click", function (event) {
-    if (!event.target.closest(".dropdown")) {
-        menuContent.classList.remove("show");
-    }
-});
-
-function change_mode() {
-    document.body.classList.toggle("dark-mode");
-}
 
 // - Jak to jest być skrybą? Dobrze?
 // Moim zdaniem to nie ma tak, że dobrze albo że nie dobrze. 
@@ -540,479 +256,4 @@ function change_mode() {
 // I dziękuję życiu. 
 // Dziękuję mu, życie to śpiew, życie to taniec, życie to miłość. 
 // Wielu ludzi pyta mnie o to samo, ale jak ty to robisz?, skąd czerpiesz tę radość? 
-// A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy społecznej i będę ot, choćby sadzić... doć... marchew. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") {
-    document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
-}
+// A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy społecznej i będę ot, choćby sadzić... doć... marchew.
