@@ -6,7 +6,7 @@
     <title>Helpdesk</title>
     <link rel="icon" href="images/lisokona.png">
     <link rel="stylesheet" href="styl.css">
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module"></script>
 </head>
 <body>
     
@@ -64,7 +64,7 @@
                 / All: <span id="totalCount">0</span>
             </p>
 
-            <button id="resetMemory" type="button" onclick="resetMemory()">
+            <button id="resetMemory" type="button">
                 Reset Memory
             </button>
         </div>
@@ -126,7 +126,7 @@
                 </div>
             </div>
 
-            <div class="dropdown-item" onclick="change_mode()">
+            <div class="dropdown-item" id="changeMode">
                 Change mode
             </div>
 
@@ -152,31 +152,14 @@
             <h3>Import data</h3>
             <p>Are you sure you want to import this file?</p>
             <p id="message_import_confirm"></p>
-            <button onclick="cancelImport()">Cancel</button>
-            <button onclick="confirmImport()">Confirm</button>
-        </div>
-    </div>
-
-    <input type="file" id="fileInput" accept=".json,.csv,.xml" hidden>
-
-    <p id="message_import"></p>
-
-    <ul id="ticketList">
-    </ul>
-
-    <div id="importConfirm" class="import-window">
-        <div class="import-content">
-            <h3>Import data</h3>
-            <p>Are you sure you want to import this file?</p>
-            <p id="message_import_confirm"></p>
-            <button onclick="cancelImport()">Anuluj</button>
-            <button onclick="confirmImport()">Importuj</button>
+            <button id="cancel">Cancel</button>
+            <button id="confirm">Confirm</button>
         </div>
     </div>
 
     <img id="Fox" src="images/ArcticFox.png" alt="lisio">
 
-    <img id="Snowman" src="images/Snowman.png" alt="balwanek" onclick="lightSnowman()">
+    <img id="Snowman" src="images/Snowman.png" alt="balwanek">
     
     <div class="footer">
 
