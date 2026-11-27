@@ -1,5 +1,5 @@
-import { gettickets, setticketCounter } from '../script.js';
-import { saveToStorage, filter } from './listLogic.js';
+import { gettickets, setticketCounter } from '../script.ts';
+import { saveToStorage, filter } from './listLogic.ts';
 
 
 
@@ -7,36 +7,36 @@ export function initImport() {
     const fileInput = document.getElementById("fileInput");
     if (!fileInput) return;
 
-    document.getElementById("fileInput").addEventListener("change", function() {
+    document.getElementById("fileInput")!.addEventListener("change", function() {
     if (this.files.length > 0) {
         showImportWindow();
     }
     });
 
-    document.getElementById("cancel").addEventListener("click", function() {
+    document.getElementById("cancel")!.addEventListener("click", function() {
 
         cancelImport();
 
     });
 
-    document.getElementById("confirm").addEventListener("click", function() {
+    document.getElementById("confirm")!.addEventListener("click", function() {
 
         confirmImport();
 
     });
 
     function showImportWindow() {
-    document.getElementById("importConfirm").style.display = "flex";
-    document.getElementById("message_import_confirm").textContent = `file: ${document.getElementById("fileInput").files[0].name}`;
+    document.getElementById("importConfirm")!.style.display = "flex";
+    document.getElementById("message_import_confirm")!.textContent = `file: ${(<HTMLInputElement>document?.getElementById("fileInput")).files[0].name}`;
     }
 
     function cancelImport() {
-        document.getElementById("importConfirm").style.display = "none";
-        document.getElementById("fileInput").value = "";
+        document.getElementById("importConfirm")!.style.display = "none";
+        <HTMLInputElement>document.getElementById("fileInput")!.value = "";
     }
 
     function confirmImport() {
-        document.getElementById("importConfirm").style.display = "none";
+        document.getElementById("importConfirm")!.style.display = "none";
         listImport();
     }
 
@@ -44,7 +44,7 @@ export function initImport() {
         const messageEl = document.getElementById("message_import");
 
         try {
-        const file = fileInput.files[0];
+        const file = fileInput!.files[0];
 
         if (!file) {
             throw new Error("No file selected");
@@ -161,11 +161,11 @@ export function initImport() {
         setticketCounter(Math.max(0, ...numericIds) + 1);
 
         saveToStorage();
-        document.getElementById('ticketForm').reset();
+        document.getElementById('ticketForm')!.reset();
         filter();
-        document.getElementById("message_import").textContent = "Import succesful";
+        document.getElementById("message_import")!.textContent = "Import succesful";
     } catch (error) {
-        document.getElementById("message_import").textContent = error.message;
+        document.getElementById("message_import")!.textContent = error.message;
     }
     }
 }

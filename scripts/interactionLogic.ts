@@ -5,18 +5,18 @@ export function initInteractionLogic(){
     const menuContent = document.getElementById("menuContent");
     const dropdown = document.getElementById("changeMode");
 
-    menuButton.addEventListener("click", function () {
-        menuContent.classList.toggle("show");
+    menuButton!.addEventListener("click", function () {
+        menuContent!.classList.toggle("show");
     });
 
     document.addEventListener("click", function (event) {
-        if (!event.target.closest(".dropdown")) {
-            menuContent.classList.remove("show");
+        if (!event.target!.closest(".dropdown")) {
+            menuContent!.classList.remove("show");
         }
     });
 
 
-    dropdown.addEventListener("click", function () {
+    dropdown!.addEventListener("click", function () {
         document.body.classList.toggle("dark-mode");
     });
 

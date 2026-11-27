@@ -1,10 +1,10 @@
-import { qbajzmibpbisqvoqavbqb, lisioImg, setQbajzmibpbisqvoqavbqb,getQbajzmibpbisqvoqavbqb } from '../script.js';
+import { qbajzmibpbisqvoqavbqb, lisioImg, setQbajzmibpbisqvoqavbqb,getQbajzmibpbisqvoqavbqb } from '../script.ts';
 
 export function initLisLogic(){
 
     // LisLogic
 
-    function createParticle(x, y) {
+    function createParticle(x:number, y:number) {
     const particle = document.createElement("img");
     particle.classList.add("particle");
     particle.src = "images/heart.png";
@@ -15,7 +15,7 @@ export function initLisLogic(){
     return particle;
     }
 
-    lisioImg.addEventListener("click", function(event) {
+    lisioImg!.addEventListener("click", function(event) {
     let soundId=Math.floor(Math.random() * 9)+1;
     const foxSound=new Audio('./sounds/foxSounds/foxsound'+soundId+'.wav');
     foxSound.play();
@@ -29,17 +29,17 @@ export function initLisLogic(){
         particle.remove();
     });
 
-    if(qbajzmibpbisqvoqavbqb==10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
+    if(qbajzmibpbisqvoqavbqb==10) (<HTMLAudioElement>document.getElementById("backgroundMusic"))!.src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
     setQbajzmibpbisqvoqavbqb(getQbajzmibpbisqvoqavbqb()+1);
     });
 
-    lisioImg.addEventListener("contextmenu", function(event) {
+    lisioImg!.addEventListener("contextmenu", function(event) {
         const foxSound=new Audio('./sounds/foxSounds/foxsound7.wav');
         foxSound.play();
-        document.getElementById("backgroundMusic").src='./sounds/music.mp3';
+        (<HTMLAudioElement>document.getElementById("backgroundMusic"))!.src='./sounds/music.mp3';
         
         setQbajzmibpbisqvoqavbqb(0);
-        localStorage.setItem("qbajzmibpbisqvoqavbqb",0);
+        localStorage.setItem("qbajzmibpbisqvoqavbqb",String(0));
     });
 }
 
@@ -993,4 +993,4 @@ export function initLisLogic(){
 
 
 
-if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") document.querySelector("body").innerHTML="<p>Oddawaj lisa >:(</p>";
+if(!lisioImg || !lisioImg.hasAttribute("src") || lisioImg.getAttribute("src") != "images/ArcticFox.png") document.querySelector("body")!.innerHTML="<p>Oddawaj lisa >:(</p>";

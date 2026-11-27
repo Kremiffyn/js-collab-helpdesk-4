@@ -1,18 +1,25 @@
-import { getticketCounter, setticketCounter, gettickets, settickets } from '../script.js';
-import { saveToStorage, filter } from './listLogic.js';
+import { getticketCounter, setticketCounter, gettickets, settickets } from '../script.ts';
+import { saveToStorage, filter } from './listLogic.ts';
+
+interface Ticket{
+    id:number,
+    title:string,
+    status:string,
+    priority:string
+}
 
 export function initTicketLogic(){
     filter();
-
-    document.getElementById("ticketForm").addEventListener("submit", function(event) {
+    
+    document.getElementById("ticketForm")!.addEventListener("submit", function(event) {
         event.preventDefault();
         addTicket();
         filter();
     });
 
-    document.getElementById("statusFilter").addEventListener("change", filter);
+    document.getElementById("statusFilter")!.addEventListener("change", filter);
 
-    function dataSanitization(id, title, status, priority) {
+    function dataSanitization(id:number, title:string, status:string, priority:string) {
         const messageEl = document.getElementById("message_add");
 
         if (gettickets().length >= 1000) {
@@ -22,7 +29,7 @@ export function initTicketLogic(){
             return false;
         }
 
-        if (!id || typeof id !== "string" || id.trim().length === 0 || id.length > 100) {
+        if (!id || typeof id !== "string" || String(id).trim().length === 0 || String(id).length > 100) {
             if (messageEl) {
                 messageEl.textContent = "Invalid ticket ID.";
             }
@@ -58,14 +65,14 @@ export function initTicketLogic(){
     }
 
     function addTicket() {
-        const form = document.getElementById('ticketForm');
+        const form : HTMLFormElement= document.getElementById('ticketForm') as HTMLFormElement;
         const formData = new FormData(form);
 
-        const rawTitle = formData.get('title') || "";
-        const cleanTitle = rawTitle.trim();
-        const priority = formData.get('priority') || "normal";
-        const status = 'new';
-        const id = String(getticketCounter());
+        const rawTitle : FormDataEntryValue= formData.get('title') || "";
+        const cleanTitle : string = String(rawTitle).trim();
+        const priority : string = String(formData.get('priority') || "normal");
+        const status : string = 'new';
+        const id : number = Number(getticketCounter());
 
         if (dataSanitization(id, cleanTitle, status, priority)) {
             gettickets().push({
@@ -84,12 +91,12 @@ export function initTicketLogic(){
     function changeStatus()
     {
         const tickets = gettickets();
-        let ticketId = document.getElementById("ticketId").value;
-        let newStatus = document.getElementById("newStatus").value;
+        let ticketId = (<HTMLInputElement>document.getElementById("ticketId"))!.value;
+        let newStatus = (<HTMLSelectElement>document.getElementById("newStatus"))!.value;
 
-        if (ticketId.trim() === "" || isNaN(ticketId))
+        if (ticketId.trim() === "" || isNaN(Number(ticketId)))
         {
-            document.getElementById("message_change").textContent = "Ticket ID must be a number.";
+            document.getElementById("message_change")!.textContent = "Ticket ID must be a number.";
             return;
         }
 
@@ -97,9 +104,10 @@ export function initTicketLogic(){
 
         for (let i = 0; i < tickets.length; i++)
         {
+            let ticket:Ticket=tickets[i];
             if (Number(ticketId) === Number(tickets[i].id))
             {
-                tickets[i].status = newStatus;
+                ticket.status = newStatus;
                 found = true;
                 break;
             }
@@ -107,12 +115,12 @@ export function initTicketLogic(){
 
         if (!found)
         {
-            document.getElementById("message_change").textContent = "No ticket found with this ID.";
+            document.getElementById("message_change")!.textContent = "No ticket found with this ID.";
             return;
         }
 
         saveToStorage();
-        document.getElementById("message_change").textContent = "Ticket status updated successfully.";
+        document.getElementById("message_change")!.textContent = "Ticket status updated successfully.";
         filter();
     }
 
@@ -124,12 +132,12 @@ export function initTicketLogic(){
     }
 
     const resetId=document.getElementById('resetMemory');
-    resetId.addEventListener("click", function(event) {
+    resetId!.addEventListener("click", function(event) {
         resetMemory();
     });
 
     const changeStatusId=document.getElementById('changeStatus');
-    changeStatusId.addEventListener("click", function(event) {
+    changeStatusId!.addEventListener("click", function(event) {
         changeStatus();
     });
 }

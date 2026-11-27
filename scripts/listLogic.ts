@@ -1,12 +1,19 @@
-import { gettickets, getticketCounter } from '../script.js';
+import { gettickets, getticketCounter } from '../script.ts';
+
+interface Ticket{
+    id:number,
+    title:string,
+    status:string,
+    priority:string
+}
 
 export function saveToStorage() {
     localStorage.setItem("tickets", JSON.stringify(gettickets()));
-    localStorage.setItem("ticketCounter", getticketCounter());
+    localStorage.setItem("ticketCounter", String(getticketCounter()));
 }
 
 export function filter() {
-    const statusFilterEl = document.getElementById("statusFilter");
+    const statusFilterEl = document.getElementById("statusFilter")! as HTMLSelectElement;
     const value_filter = statusFilterEl ? statusFilterEl.value : "all";
     const list = document.getElementById("ticketList");
 
@@ -18,8 +25,9 @@ export function filter() {
     const tickets = gettickets();
 
     for (let i = 0; i < tickets.length; i++) {
-        if (value_filter === "all" || tickets[i].status === value_filter) {
-            const ticketRow = createTicketRow(tickets[i]);
+        let ticket:Ticket=tickets[i];
+        if (value_filter === "all" || ticket.status === value_filter) {
+            const ticketRow = createTicketRow(ticket);
             list.appendChild(ticketRow);
             visibleCount++;
         }
@@ -33,14 +41,14 @@ export function filter() {
         list.appendChild(emptyLi);
     }
 
-    const visibleCountEl = document.getElementById("visibleCount");
-    const totalCountEl = document.getElementById("totalCount");
+    const visibleCountEl : HTMLElement= document.getElementById("visibleCount")!;
+    const totalCountEl : HTMLElement = document.getElementById("totalCount")!;
 
-    if (visibleCountEl) visibleCountEl.textContent = visibleCount;
-    if (totalCountEl) totalCountEl.textContent = tickets.length;
+    if (visibleCountEl) visibleCountEl.textContent = String(visibleCount);
+    if (totalCountEl) totalCountEl.textContent = String(tickets.length);
 }
 
-export function createTicketRow(ticket) {
+export function createTicketRow(ticket:Ticket) {
     const li = document.createElement("li");
 
     const p1 = document.createElement("p");

@@ -1,22 +1,29 @@
-import { gettickets,getlink,getfilename,setfilename,setlink } from '../script.js';
+import { gettickets,getlink,getfilename,setfilename } from '../script.ts';
 
 let tickets = gettickets();
 let link=getlink();
 let filename=getfilename();
 
+interface Ticket{
+    id:number,
+    title:string,
+    status:string,
+    priority:string
+}
+
 export function initExport(){
-    document.getElementById("exJSON").addEventListener("click", () => {
-        event.preventDefault();
+    document.getElementById("exJSON")!.addEventListener("click", () => {
+        event!.preventDefault();
         exportJSON();
     });
 
-    document.getElementById("exCSV").addEventListener("click", () => {
-        event.preventDefault();
+    document.getElementById("exCSV")!.addEventListener("click", () => {
+        event!.preventDefault();
         exportCSV();
     });
 
-    document.getElementById("exXML").addEventListener("click", () => {
-        event.preventDefault();
+    document.getElementById("exXML")!.addEventListener("click", () => {
+        event!.preventDefault();
         exportXML();
     });
 
@@ -27,7 +34,7 @@ export function initExport(){
         const text = JSON.stringify(tickets);
 
         link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(text);
-        link.download = filename;
+        link.download = String(filename);
         link.click();
     }
 
@@ -44,7 +51,7 @@ export function initExport(){
         });
         
         link.href = 'data:application/csv;charset=utf-8,' + encodeURIComponent(textCSV);
-        link.download = filename;
+        link.download = String(filename);
         link.click();
     }
 
@@ -61,7 +68,7 @@ export function initExport(){
     
         textXML+='</tickets>';
         link.href = 'data:application/xml;charset=utf-8,' + encodeURIComponent(textXML);
-        link.download = filename;
+        link.download = String(filename);
         link.click();
     }
 }
